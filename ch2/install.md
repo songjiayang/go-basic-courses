@@ -5,7 +5,7 @@
 
 ### 下载安装
 
-* 登录 vscode 官网（https://code.visualstudio.com/）
+* 登录 vscode 官网: https://code.visualstudio.com
 * 根据操作系统选择对应包下载
 
   ![shell command](../pics/install-vscode.png)
