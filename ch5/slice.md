@@ -70,7 +70,7 @@ cap:  12
 
 * 多个切片共享一个底层数组的情况
 
-  > 对底层数组的修改，将影响上层多个切片的值
+> 对底层数组的修改，将影响上层多个切片的值
 
 ```go
 package main
@@ -104,4 +104,55 @@ newSlice:  [1 2 3]
 after modify underlying array:
 slice:  [6 2 3 4 5]
 newSlice:  [6 2 3]
+```
+
+* 使用 `copy` 方法可以避免共享同一个底层数组
+
+> 示例代码如下：
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	slice := []int{1, 2, 3, 4, 5}
+	newSlice := make([]int, len(slice))
+	copy(newSlice, slice)
+	fmt.Println("before modifying underlying array:")
+	fmt.Println("slice: ", slice)
+	fmt.Println("newSlice: ", newSlice)
+	fmt.Println()
+
+	newSlice[0] = 6
+	fmt.Println("after modifying underlying array:")
+	fmt.Println("slice: ", slice)
+	fmt.Println("newSlice: ", newSlice)
+}
+```
+
+以上代码预期输出如下：
+
+```
+before modifying underlying array:
+slice:  [1 2 3 4 5]
+newSlice:  [1 2 3 4 5]
+
+after modifying underlying array:
+slice:  [1 2 3 4 5]
+newSlice:  [6 2 3 4 5]
+```
+
+### 小练习
+
+如何使用 `copy` 函数进行切片部分拷贝？
+
+```go
+// 假设切片 slice 如下:
+slice := []int{1, 2, 3, 4, 5}
+
+// 如何使用 copy 创建切片 newSlice, 该切片值为 [2, 3, 4]
+newSlice = copy(?,?)
 ```
