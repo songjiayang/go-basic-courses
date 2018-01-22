@@ -14,3 +14,4 @@
   * [基础数据类型](ch4/readme.md)
   * [高级类型](ch5/readme.md)
     * [数组](ch5/array.md)
+    * [切片](ch5/slice.md)
