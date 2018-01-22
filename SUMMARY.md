@@ -8,5 +8,5 @@
     * [命名规范](ch3/identifiers.md)
     * [变量](ch3/var.md)
     * [常量](ch3/const.md)
-    * [数组](ch2/array.md)
+    * [数组](ch3/array.md)
   * [基础数据类型](ch4/readme.md)
