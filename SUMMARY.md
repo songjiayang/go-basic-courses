@@ -9,5 +9,5 @@
     * [命名规范](ch3/identifiers.md)
     * [变量](ch3/var.md)
     * [常量](ch3/const.md)
-  * [高级类型](ch4/readme.md)
-    * [数组](ch4/array.md)
+  * [高级类型](ch5/readme.md)
+    * [数组](ch5/array.md)
