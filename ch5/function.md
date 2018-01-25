@@ -74,7 +74,7 @@ func main(){
 * 闭包
 
 ```go
-func addInt() func() int {
+func addOne() func() int {
      i := 0
      return func() int {
        i += 1
@@ -83,7 +83,7 @@ func addInt() func() int {
 }
 
 func main(){
-     num := addInt()
+     num := addOne()
      fmt.Println(num())
      fmt.Println(num())
      fmt.Println(num())
