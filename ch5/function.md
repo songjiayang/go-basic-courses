@@ -17,7 +17,7 @@ func name(parameter-list) (result-list){
 * 单返回值函数
 
 ```go
-func plus(a int, b int) (res int){
+func plus(a, b int) (res int){
 	return a + b
 }
 ```
@@ -46,6 +46,7 @@ func namedReturnValue()(name string, height int){
 
 ```go
 func sum(nums ...int)int{
+    fmt.Println("len of nums is : ", len(nums))
     res := 0
     for _, v := range nums{
         res += v
