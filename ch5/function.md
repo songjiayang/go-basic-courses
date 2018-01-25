@@ -74,19 +74,24 @@ func main(){
 * 闭包
 
 ```go
-func addOne() func() int {
-     i := 0
-     return func() int {
-       i += 1
-       return i
-     }
+func main() {
+	addOne := addInt(1)
+	fmt.Println(addOne())
+	fmt.Println(addOne())
+	fmt.Println(addOne())
+
+	addTwo := addInt(2)
+	fmt.Println(addTwo())
+	fmt.Println(addTwo())
+	fmt.Println(addTwo())
 }
 
-func main(){
-     num := addOne()
-     fmt.Println(num())
-     fmt.Println(num())
-     fmt.Println(num())
+func addInt(n int) func() int {
+	i := 0
+	return func() int {
+		i += n
+		return i
+	}
 }
 ```
 
