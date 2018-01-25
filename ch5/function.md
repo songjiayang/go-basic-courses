@@ -46,22 +46,6 @@ func main(){
 }
 ```
 
-* 递归函数
-
-```go
-func recursion(num int) int{
-    if num == 0{
-        return 1
-    }
-    return num * recursion(num - 1)
-}
-
-func main(){
-    // 3 * 2 * 1
-    fmt.Println(recursion(3))
-}
-```
-
 * 匿名函数
 
 ```go
@@ -88,5 +72,47 @@ func main(){
      fmt.Println(num())
      fmt.Println(num())
      fmt.Println(num())
+}
+```
+
+* 函数作为参数
+
+```go
+func sayHello(name string) {
+	fmt.Println("Hello ", name)
+}
+
+func logger(f func(string), name string) {
+	fmt.Println("start calling method sayHello")
+	f(name)
+	fmt.Println("end calling method sayHellog")
+}
+
+func main() {
+	logger(sayHello, "禾木课堂")
+}
+```
+
+* 传值和传引用
+
+```go
+func sendValue(name string) {
+	name = "hemuketang"
+}
+
+func sendAddress(name *string) {
+	*name = "hemuketang"
+}
+
+func main() {
+	// 传值和传引用
+	str := "禾木课堂"
+	fmt.Println("before calling sendValue, str : ", str)
+	sendValue(str)
+	fmt.Println("after calling sendValue, str : ", str)
+
+	fmt.Println("before calling sendAddress, str : ", str)
+	sendAddress(&str)
+	fmt.Println("after calling sendAddress, str: ", str)
 }
 ```
