@@ -2,6 +2,18 @@
 
 > 函数是语句序列的集合，能够将一个大的工作分解为小的任务，对外隐藏了实现细节
 
+* 函数组成
+  * 函数名
+  * 参数列表(parameter-list)
+  * 返回值(result-list)
+  * 函数体(body)
+
+```go
+func name(parameter-list) (result-list){
+    body
+}
+```
+
 * 单返回值函数
 
 ```go
