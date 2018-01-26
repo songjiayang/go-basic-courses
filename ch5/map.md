@@ -13,7 +13,7 @@ map[KeyType]ValueType
 注意点：
 
 - 同一个 map KeyType 是相同类型。
-- KeyType 可以为基础数据类型（例如 bool, 数字类型，字符串）, 不能为数组，切片，集合，它的取值能够使用 `==` 进行比较。
+- KeyType 可以为基础数据类型（例如 bool, 数字类型，字符串）, 不能为数组，切片，集合，它的取值必须是能够使用 `==` 进行比较。
 - KeyType 的值具有唯一性，不能重复。
 - ValueType 可以为任意类型。
 - 无序性。
@@ -40,7 +40,7 @@ cMap = make(map[string]int, 100)
 cMap["北京"] = 1
 ```
 
-说明：在使用 make 初始化 map 的时候，还可以指定初始容量，在能够预估 map key 数量的情况下，减少动态分配的次数，从而提升性能。
+说明：在使用 make 初始化 map 的时候，可以指定初始容量，这在能预估 map key 数量的情况下，减少动态分配的次数，从而提升性能。
 
 - 简短声明方式
 
@@ -48,7 +48,7 @@ cMap["北京"] = 1
 cMap := map[string]int{"北京": 1}
 ```
 
-###  map 基本操作
+### map 基本操作
 
 ```
 cMap := map[string]int{}
@@ -68,9 +68,8 @@ if ok {
   fmt.Println("key not exist")  
 }
 
-delete(cMap, "北京") // 删除存在的 key
+delete(cMap, "北京") // 删除 key
 fmt.Println("北京")
-
 ```
 
 ### 循环和无序性
@@ -105,12 +104,12 @@ go func() {
 wg.Wait()
 ```
 
-在 Go 1.6 之后的版本，多次运行此段代码，你会遇到这样的信息：
+在 Go 1.6 之后的版本，多次运行此段代码，你将遇到这样的错误信息：
 
 ```
 fatal error: concurrent map writes
 
-goroutine 6 [running]:
+goroutine x [running]:
 runtime.throw(0x10c64b6, 0x15)
 .....
 ```
