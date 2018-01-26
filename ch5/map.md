@@ -119,3 +119,18 @@ runtime.throw(0x10c64b6, 0x15)
 
 - 对写操作加锁
 - 使用 security map
+
+### map 嵌套
+
+```
+provinces := make(map[string]map[string]int)
+
+provinces["北京"] = map[string]int{
+  "东城区": 1,
+  "西城区": 2,
+  "朝阳区": 3,
+  "海淀区": 4,
+}
+
+fmt.Println(provinces["北京"])
+```
