@@ -4,8 +4,8 @@
 
 * 视频
   * B 站主页: https://space.bilibili.com/276273794/#/
-* Gitbook 书籍: https://www.gitbook.com/book/songjiayang/go-basic-courses/details
-* Github 源码: https://github.com/binatify/importgo
+* GitBook 书籍: https://www.gitbook.com/book/songjiayang/go-basic-courses/details
+* GitHub 源码: https://github.com/binatify/importgo
 * 欢迎加入 QQ 群：694650181 ，加入请备注：“Go 零基础入门教程”
 
 #### 作者
@@ -15,6 +15,7 @@
   * [微博](https://weibo.com/songjiayang1?refer_flag=1005055010_)
   * [github](https://github.com/songjiayang)
   * 个人公众号
+  ![第二范式](/pics/第二范式.jpg)
 
 - 薛锦
 
