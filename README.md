@@ -15,6 +15,7 @@
   * [微博](https://weibo.com/songjiayang1?refer_flag=1005055010_)
   * [github](https://github.com/songjiayang)
   * 个人公众号
+  
   ![第二范式](/pics/第二范式.jpg)
 
 - 薛锦
