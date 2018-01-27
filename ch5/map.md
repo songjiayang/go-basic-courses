@@ -13,8 +13,8 @@ map[KeyType]ValueType
 注意点：
 
 - 必须指定 key, value 的类型，插入的纪录类型必须匹配。
+- key 具有唯一性，插入纪录的 key 不能重复。
 - KeyType 可以为基础数据类型（例如 bool, 数字类型，字符串）, 不能为数组，切片，map，它的取值必须是能够使用 `==` 进行比较。
-- KeyType 的值具有唯一性，不能重复。
 - ValueType 可以为任意类型。
 - 无序性。
 - 线程不安全, 一个 goroutine 在对 map 进行写的时候，另外的 goroutine 不能进行读和写操作，Go 1.6 版本以后会抛出 runtime 错误信息。
