@@ -4,7 +4,7 @@
 
 ### 语法
 
-使用关键字 map 来声明，形如：
+使用关键字 map 来声明形如：
 
 ```
 map[KeyType]ValueType
@@ -13,7 +13,7 @@ map[KeyType]ValueType
 注意点：
 
 - 同一个 map KeyType 是相同类型。
-- KeyType 可以为基础数据类型（例如 bool, 数字类型，字符串）, 不能为数组，切片，集合，它的取值必须是能够使用 `==` 进行比较。
+- KeyType 可以为基础数据类型（例如 bool, 数字类型，字符串）, 不能为数组，切片，map，它的取值必须是能够使用 `==` 进行比较。
 - KeyType 的值具有唯一性，不能重复。
 - ValueType 可以为任意类型。
 - 无序性。
