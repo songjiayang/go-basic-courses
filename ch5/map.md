@@ -116,8 +116,8 @@ runtime.throw(0x10c64b6, 0x15)
 
 解决之道：
 
-- 对写操作加锁
-- 使用 security map
+- 对读写操作加锁
+- 使用 security map, 例如 `sync.map`
 
 ### map 嵌套
 
