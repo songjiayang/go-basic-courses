@@ -96,7 +96,7 @@ func printAge(age int) {
 
 因为 `printAge` 方法期望的是 int 类型，但是我们传入的参数是 `Age`，他们虽然具有相同的值，但为不同的类型。
 
-我们可以采用显示的类型转换（ `printAge(int(primary))`）来修复。
+我们可以采用显式的类型转换（ `printAge(int(primary))`）来修复。
 
 ### 不同自定义类型间的操作
 
@@ -116,7 +116,7 @@ func main() {
 }
 ```
 
-当我们运行代码会出现 `./main.go:12:21: invalid operation: height / age (mismatched types Height and Age)` 错误，修复方法使用显示转换:
+当我们运行代码会出现 `./main.go:12:21: invalid operation: height / age (mismatched types Height and Age)` 错误，修复方法使用显式转换:
 
 ```golang
 fmt.Println(int(height) / int(age))
