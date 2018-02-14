@@ -4,19 +4,21 @@
 
 使用关键字 `type` 来声明：
 
-```golang
+```
 type NAME TYPE
 ```
 
 ### 声明语法
 
 - 单次声明
-```golang
+
+```
 type City string
 ```
 
 - 批量声明
-```golang
+
+```
 type (
     B0 = int8
     B1 = int16
@@ -34,7 +36,7 @@ type (
 
 ### 简单示例
 
-```golang
+```
 package main
 
 import "fmt"
@@ -50,7 +52,7 @@ func main() {
 
 ### 基本操作
 
-```golang
+```
 package main
 
 import "fmt"
@@ -75,7 +77,7 @@ func main() {
 
 ### 函数参数
 
-```golang
+```
 package main
 
 import "fmt"
@@ -100,7 +102,7 @@ func printAge(age int) {
 
 ### 不同自定义类型间的操作
 
-```golang
+```
 package main
 
 import "fmt"
@@ -118,6 +120,6 @@ func main() {
 
 当我们运行代码会出现 `./main.go:12:21: invalid operation: height / age (mismatched types Height and Age)` 错误，修复方法使用显式转换:
 
-```golang
+```
 fmt.Println(int(height) / int(age))
 ```
