@@ -17,7 +17,10 @@ type interface_name interface {
 ``` go
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 type geometry interface {
 	area() float32
@@ -41,11 +44,11 @@ type circle struct {
 }
 
 func (c circle) area() float32 {
-	return 3.14 * c.radius * c.radius
+	return math.Pi * c.radius * c.radius
 }
 
 func (c circle) perim() float32 {
-	return 2 * 3.14 * c.radius
+	return 2 * math.Pi * c.radius
 }
 
 func show(name string, g geometry) {
