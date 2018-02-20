@@ -136,4 +136,38 @@ func main() {
 }
 ```
 
+#### 结构体内嵌匿名成员
+> 声明一个成员对应的数据类型而不指名成员的名字；这类成员就叫匿名成员
+
+``` go
+package main
+
+import "fmt"
+
+type Person struct {
+	Name string
+	Age  int
+}
+
+func (p Person) sayHello() {
+	fmt.Println("hello")
+}
+
+type Student struct {
+	Person
+}
+
+func main() {
+	per := Person{
+		Name: "name",
+		Age:  18,
+	}
+
+	stu := Student{Person: per}
+
+	fmt.Println("stu.Name: ", stu.Name)
+	fmt.Println("stu.Age: ", stu.Age)
+	stu.sayHello() // 可以直接调用成员的方法
+}
+```
 
