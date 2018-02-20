@@ -19,19 +19,17 @@ import "fmt"
 type Student struct {
 	Age     int
 	Name    string
-	Address string
 }
 
 func main() {
 	stu := Student{
 		Age:     18,
 		Name:    "name",
-		Address: "addr",
 	}
 	fmt.Println(stu)
 
 	// 在赋值的时候，字段名可以忽略
-	fmt.Println(Student{20, "new name", "new addr"})
+	fmt.Println(Student{20, "new name"})
 
 	return
 }
@@ -145,8 +143,8 @@ package main
 import "fmt"
 
 type Person struct {
-	Name string
 	Age  int
+    Name string
 }
 
 type Student struct {
@@ -155,13 +153,13 @@ type Student struct {
 
 func main() {
 	per := Person{
-		Name: "name",
 		Age:  18,
+		Name: "name",
 	}
 
 	stu := Student{Person: per}
 
-	fmt.Println("stu.Name: ", stu.Name)
 	fmt.Println("stu.Age: ", stu.Age)
+	fmt.Println("stu.Name: ", stu.Name)
 }
 ```
