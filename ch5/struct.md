@@ -149,10 +149,6 @@ type Person struct {
 	Age  int
 }
 
-func (p Person) sayHello() {
-	fmt.Println("hello")
-}
-
 type Student struct {
 	Person
 }
@@ -167,7 +163,5 @@ func main() {
 
 	fmt.Println("stu.Name: ", stu.Name)
 	fmt.Println("stu.Age: ", stu.Age)
-	stu.sayHello() // 可以直接调用成员的方法
 }
 ```
-
