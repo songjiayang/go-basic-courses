@@ -18,3 +18,5 @@
     * [自定义类型](ch5/custom.md)
     * [函数](ch5/function.md)
     * [结构体](ch5/struct.md)
+    * [接口](ch5/interface.md)
+
