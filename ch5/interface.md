@@ -51,9 +51,15 @@ func (c circle) perim() float32 {
 	return 2 * math.Pi * c.radius
 }
 
-func show(name string, g geometry) {
-	fmt.Printf("area of %v is %v \n", name, g.area())
-	fmt.Printf("perim of %v is %v \n", name, g.perim())
+func show(name string, param interface{}) {
+	switch param.(type) {
+	case geometry:
+		// 类型断言
+		fmt.Printf("area of %v is %v \n", name, param.(geometry).area())
+		fmt.Printf("perim of %v is %v \n", name, param.(geometry).perim())
+	default:
+		fmt.Println("wrong type!")
+	}
 }
 
 func main() {
@@ -68,6 +74,6 @@ func main() {
 	}
 	show("circle", cir)
 
-	return
+	show("test", "test param")
 }
 ```
