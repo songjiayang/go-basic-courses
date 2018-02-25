@@ -5,15 +5,20 @@
 虽然 Go 不是经典意义上的面向对象语言，但是我们可以在一些接受者（自定义类型，结构体）上定义函数，同理这些接受者的函数在 Go 里面也叫做方法。
 
 
-### 和函数对比
+### 声明
 
-前面我们已经讲过函数(function), 方法 (method) 和函数的主要区别为：
+方法（method）的声明和函数很相似, 只不过它必须指定接受者。
 
-- 函数属于整个包，没有接收者。
-- 方法属于对应的接受者。
+```
+func (t T) F() {}
+func (t *T) N() {}
+```
 
-更多资料和讨论请参考[链接](https://stackoverflow.com/questions/8263546/whats-the-difference-of-functions-and-methods-in-go)。
+注意：
 
+ - 接受者指凡是用关键字 `type` 定义的类型，例如自定义类型，结构体。
+ - 同一个接受者的函数名不能重复 (没有重载)。
+ - 结构体中方法名不能和字段重复。
 
 ### 自定义类型添加方法
 
@@ -22,24 +27,17 @@ package main
 
 import "fmt"
 
-type Collection []int
+type Age int
 
-func (c Collection) Sum() int {
-	sum := 0
-	for _, item := range c {
-		sum += item
-	}
-
-	return sum
+func (a Age) PrintAge() {
+	fmt.Println("Your age is", a)
 }
 
 func main() {
-	c := Collection{
-		1, 2, 3, 4, 5, 6, 7, 8, 9,
-	}
-
-	fmt.Println("Sum is", c.Sum())
+	a := Age(18)
+	a.PrintAge()
 }
+
 ```
 
 ### 结构体添加方法
@@ -50,28 +48,61 @@ package main
 import "fmt"
 
 type Student struct {
-	Age  int
 	Name string
+
+	Age  int
 }
 
-func (s *Student) Print() {
-	fmt.Println(s.Age)
-	if s.Age <= 12 {
-		fmt.Println(s.Name, "是一名小学生")
-	} else {
-		fmt.Println(s.Name, "不是一名小学生")
-	}
-}
-
-func (s *Student) GrowUp(year int) {
+func (s *Student) AddAge(year int) {
 	s.Age += year
 }
 
-func main() {
-	s := &Student{8, "小明"}
-	s.Print()
+func (s *Student) PrintAge() {
+	fmt.Printf("%s's age is %d\n", s.Name, s.Age)
+}
 
-	s.GrowUp(6)
-	s.Print()
+func main() {
+	s := Student{8, "Tony"}
+	s.PrintAge()
+
+	s.AddAge(6)
+	s.PrintAge()
+}
+
+```
+
+### 值和指针作为接收者的区别
+
+```
+package main
+
+import "fmt"
+
+type T struct {
+	a int
+	b int
+}
+
+func (m T) StayTheSame() {
+	m.a = 5
+	m.b = 7
+}
+
+func (m *T) Update() {
+	m.a = 5
+	m.b = 7
+}
+
+func main() {
+	m := &T{0, 0}
+	fmt.Println(m) // {0,0}
+
+	m.StayTheSame()
+	fmt.Println(m) // {0,0}
+
+	m.Update()
+	fmt.Println(m) // {5,7}
 }
 ```
+
+结论： 使用值作为接受者（`T`） 不会修改结构体值，而指针 `*T` 可以修改。
