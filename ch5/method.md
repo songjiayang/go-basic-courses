@@ -47,28 +47,27 @@ package main
 
 import "fmt"
 
-type Student struct {
+type Person struct {
 	Name string
 
-	Age  int
+	Age int
 }
 
-func (s *Student) AddAge(year int) {
+func (s *Person) AddAge(year int) {
 	s.Age += year
 }
 
-func (s *Student) PrintAge() {
+func (s *Person) PrintAge() {
 	fmt.Printf("%s's age is %d\n", s.Name, s.Age)
 }
 
 func main() {
-	s := Student{8, "Tony"}
+	s := Person{"Tony", 8}
 	s.PrintAge()
 
 	s.AddAge(6)
 	s.PrintAge()
 }
-
 ```
 
 ### 值和指针作为接收者的区别
