@@ -7,70 +7,134 @@
 
 ### 声明
 
-方法（method）的声明和函数很相似, 只不过它必须指定接收者。
+方法（method）的声明和函数很相似, 只不过它必须指定接收者：
 
 ```
 func (t T) F() {}
-func (t *T) N() {}
 ```
 
 注意：
 
- - 接收者指凡是用关键字 `type` 定义的类型，例如自定义类型，结构体。
- - 同一个接收者的方法名不能重复 (没有重载)。
- - 结构体中方法名不能和字段重复。
+- 接收者的类型只能为用关键字 `type` 定义的类型，例如自定义类型，结构体。
+- 同一个接收者的方法名不能重复 (没有重载)，如果是结构体，方法名还不能和字段名重复。
+- 值作为接收者无法修改其值，如果有更改需求，需要使用指针类型。
 
-### 自定义类型添加方法
-
-```
-package main
-
-import "fmt"
-
-type Age int
-
-func (a Age) PrintAge() {
-	fmt.Println("Your age is", a)
-}
-
-func main() {
-	a := Age(18)
-	a.PrintAge()
-}
-
-```
-
-### 结构体添加方法
+### 简单例子
 
 ```
 package main
 
-import "fmt"
+type T struct{}
 
-type Student struct {
-	Name string
-
-	Age int
-}
-
-func (s *Student) AddAge(year int) {
-	s.Age += year
-}
-
-func (s *Student) PrintAge() {
-	fmt.Printf("%s's age is %d\n", s.Name, s.Age)
-}
+func (t T) F()  {}
 
 func main() {
-	s := Student{"Tony", 8}
-	s.PrintAge()
-
-	s.AddAge(6)
-	s.PrintAge()
+	t := T{}
+	t.F()
 }
 ```
+
+### 接收者类型不是任意类型
+
+例如：
+
+```
+package main
+
+func (t int64) F()  {}
+
+func main() {
+	t := int64(10)
+	t.F()
+}
+```
+
+当运行以下代码会得到 `cannot define new methods on non-local type int64` 类似错误信息，我们可以使用自定义类型来解决：
+
+```
+package main
+
+type T int64
+func (t T) F()  {}
+
+func main() {
+	t := T(10)
+	t.F()
+}
+```
+
+> 小结：接收者不是任意类型，它只能为用关键字 `type` 定义的类型（例如自定义类型，结构体）。
+
+### 命名冲突
+
+a. 接收者定义的方法名不能重复, 例如：
+
+```
+package main
+
+type T struct{}
+
+func (T) F()         {}
+func (T) F(a string) {}
+
+func main() {
+	t := T{}
+	t.F()
+}
+```
+
+运行代码我们会得到 `method redeclared: T.F` 类似错误。
+
+b. 结构体方法名不能和字段重复，例如：
+
+```
+package main
+
+type T struct{
+  F string
+}
+
+func (T) F(){}
+
+func main() {
+	t := T{}
+	t.F()
+}
+```
+
+运行代码我们会得到 `: type T has both field and method named F` 类似错误。
+
+> 小结： 同一个接收者的方法名不能重复 (没有重载)；如果是结构体，方法名不能和字段重复。
+
+### 接收者可以同时为值和指针
+
+在 Go 语言中，方法的接收者可以同时为值或者指针，例如：
+
+```
+package main
+
+type T struct{}
+
+func (T) F()  {}
+func (*T) N() {}
+
+func main() {
+	t := T{}
+	t.F()
+	t.N()
+
+	t1 := &T{} // 指针类型
+	t1.F()
+	t1.N()
+}
+```
+
+可以看到无论值类型 `T` 还是指针类型 `&T` 都可以同时访问 `F` 和  `N` 方法。
 
 ### 值和指针作为接收者的区别
+
+同样我们先看一段代码：
+
 
 ```
 package main
@@ -78,15 +142,15 @@ package main
 import "fmt"
 
 type T struct {
-	a int
+	value int
 }
 
 func (m T) StayTheSame() {
-	m.a = 3
+	m.value = 3
 }
 
 func (m *T) Update() {
-	m.a = 3
+	m.value = 3
 }
 
 func main() {
@@ -101,4 +165,12 @@ func main() {
 }
 ```
 
-结论： 使用值作为接收者（`T`） 不会修改结构体值，而指针 `*T` 可以修改。
+运行代码输出结果为：
+
+```
+{0}
+{0}
+{3}
+```
+
+> 小结：值作为接收者（`T`） 不会修改结构体值，而指针 `*T` 可以修改。
