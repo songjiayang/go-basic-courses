@@ -77,3 +77,22 @@ func main() {
 	show("test", "test param")
 }
 ```
+
+### 接口中可以内嵌接口
+对上述例子做以下修改：
+- 首先添加 `tmp` 接口，该接口定义了 `area()` 方法
+- 将 `tmp` 作为 `geometry` 接口中的匿名成员，并且将 `geometry` 接口中原本定义的 `area()` 方法删除
+
+> 完成以上两步后，`geometry` 接口将会拥有 `tmp` 接口所定义的所有方法。运行结果和上述例子相同。
+
+``` go
+type tmp interface{
+	area() float32
+}
+
+type geometry interface {
+	// area() float32
+	tmp
+	perim() float32
+}
+```
