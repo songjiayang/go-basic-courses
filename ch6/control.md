@@ -44,7 +44,7 @@ func main() {
 }
 ```
 
-我们还可以使用 `if`..`else if`..`else` 来实现多分之的条件判断:
+我们还可以使用 `if`..`else if`..`else` 来实现多分支的条件判断:
 
 ```
 package main
@@ -66,7 +66,7 @@ func main() {
 
 ### switch
 
-如果我们的条件分之太多，可以考虑使用 `switch` 替换 `if`, 例如：
+如果我们的条件分支太多，可以考虑使用 `switch` 替换 `if`, 例如：
 
 ```
 package main
