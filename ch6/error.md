@@ -92,7 +92,7 @@ for i := 0; i <= 4; i++ {
 	fmt.Println(s[i])
 }
 ```
-上述例子是被动触发了 `panic` 事件。在实际开发中，也可以主动调用 `panic`,调用后会停止当前控制流程并引发一个运行时恐慌。
+上述例子中因为数组越界，触发了 runtime 异常，导致程序退出。在实际开发中，也可以主动调用 `panic` 函数达到同样效果。
 ``` go
 func panicFunc() {
 	panic(errors.New("this is test for panic"))
