@@ -57,7 +57,6 @@ func BillCustomer(c *Customer)  {
 ```
 
 ##### defer 使用中一些注意点
-> 注：以下例子参考了郝林老师《Go 并发编程实战》一书
 请看以下例子，猜下输出结果是？
 
 ``` go
