@@ -57,6 +57,8 @@ func BillCustomer(c *Customer)  {
 ```
 
 ##### defer 使用中一些注意点
+- 例子1
+
 请看以下例子，猜下输出结果是？
 
 ``` go
@@ -81,6 +83,20 @@ func printNum() {
 }
 ```
 这个例子最终输出的是： `4 3 2 1 0`。具体是什么原因留作大家思考。
+
+- 例子2
+
+``` go
+func testDefer() (i int) {
+	defer func() {
+        fmt.Println(i)
+		i = 4
+	}()
+
+	return 2
+}
+```
+以上例子，最终返回的是 4。因为`return 2` 执行后，变量 `i` 赋值为 2， 但是随后执行了 defer 函数，`i` 被赋值为4，所以最终返回结果为4。
 
 ### panic
 当程序遇到致命错误导致无法继续运行时就会出发 `panic` , 例如：数组越界，空指针等。
