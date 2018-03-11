@@ -8,9 +8,9 @@ defer 通常用于延迟调用指定的函数。例如：
 
 ``` go
 func outerFunc() {
-    defer fmt.Println(" World!")
+    defer fmt.Printf(" World!\n")
 
-    fmt.Println("Hello")
+    fmt.Print("Hello")
 }
 ```
 
@@ -144,7 +144,7 @@ func main() {
 - 思考以下代码的输出，并解释为什么
 
 ``` go
-fund printNumbers(){
+func printNumbers(){
     for i:=0; i<5; i++{
         defer func(n int){
             fmt.Printf(n)
