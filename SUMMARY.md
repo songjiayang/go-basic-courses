@@ -25,13 +25,12 @@
   * [流程控制](ch6/readme.md)
     * [分支循环](ch6/control.md)
     * [异常处理](ch6/error.md)
-
+    
   * [并发](ch7/readme.md)
-    * [goroutine](ch7/goroutine.md)
-    * [channel](ch7/channel.md)
+    * [Goroutine](ch7/goroutine.md)
+    * [Channel](ch7/channel.md)
     * [锁的使用](ch7/lock.md)
     * [原子操作](ch7/atom.md)
-    * [同步](ch7/sync.md)
 
   * [项目工程](ch8/readme.md)
     * [包](ch8/package.md)
