@@ -110,3 +110,48 @@ func main() {
 - 多个 Goroutine 的执行是随机。
 - 对于 IO 密集型任务特别有效，比如文件，网络读写。
 
+### 使用 `sync.WaitGroup` 实现同步
+
+上面例子中，其实我们还可以使用 `sync.WaitGroup` 来等待所有的 Goroutine 结束，从而实现并发的同步，这比使用 `time.Sleep()` 更加优雅，例如：
+
+```
+package main
+
+import (
+	"log"
+	"sync"
+	"time"
+)
+
+func doSomething(id int, wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	log.Printf("before do job:(%d) \n", id)
+	time.Sleep(3 * time.Second)
+	log.Printf("after do job:(%d) \n", id)
+}
+
+func main() {
+	var wg sync.WaitGroup
+	wg.Add(3)
+
+	go doSomething(1, &wg)
+	go doSomething(2, &wg)
+	go doSomething(3, &wg)
+
+	wg.Wait()
+	log.Printf("finish all jobs\n")
+}
+```
+
+运行代码输出结果为：
+
+```
+2018/03/16 13:56:09 before do job:(1) 
+2018/03/16 13:56:09 before do job:(3) 
+2018/03/16 13:56:09 before do job:(2) 
+2018/03/16 13:56:12 after do job:(1) 
+2018/03/16 13:56:12 after do job:(2) 
+2018/03/16 13:56:12 after do job:(3) 
+2018/03/16 13:56:12 finish all jobs
+```
