@@ -109,6 +109,26 @@ func main() {
 ```
 这个例子中定义了一个只能用来接收数据的通道，从语法上来看没有错误，但这是一种糟糕的实践。
 
+### channel 遍历和关闭
+
+close() 函数可以用于关闭 channel，关闭后的 channel 中如果有缓冲数据，依然可以读取，但是无法再发送数据给已经关闭的channel。
+
+``` go
+func main() {
+	ch := make(chan int, 10)
+	for i := 0; i < 10; i++ {
+		ch <- i
+	}
+	close(ch)
+
+	res := 0
+	for v := range ch {
+		res += v
+	}
+
+	fmt.Println(res)
+}
+```
 
 ### select 语句
 
@@ -116,22 +136,38 @@ select 专门用于通道发送和接收操作，看起来和 switch 很相似�
 
 在下述例子中，通过 select 的使用，保证了 worker 中的事务可以执行完毕后才退出 main 函数
 ``` go
-func worker(ch chan string) {
-	fmt.Println("do something...")
+func strWorker(ch chan string) {
+	time.Sleep(1 * time.Second)
+	fmt.Println("do something with strWorker...")
 	ch <- "str"
 }
 
+func intWorker(ch chan int) {
+	time.Sleep(2 * time.Second)
+	fmt.Println("do something with intWorker...")
+	ch <- 1
+}
+
 func main() {
-	ch := make(chan string)
+	chStr := make(chan string)
+	chInt := make(chan int)
 
-	go worker(ch)
+	go strWorker(chStr)
+	go intWorker(chInt)
 
-	select {
-	case <-ch:
-		fmt.Println("get value from chan")
+	for i := 0; i < 2; i++ {
+		select {
+		case <-chStr:
+			fmt.Println("get value from strWorker")
+
+		case <-chInt:
+			fmt.Println("get value from intWorker")
+
+		}
 	}
 }
 ```
+
 > 思考： 如果上述例子中，没有这个 select ，那么 worker 函数是否有机会执行？
 
 ### 通过 channel 实现同步机制
