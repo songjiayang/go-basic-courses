@@ -16,7 +16,7 @@ import (
 
 func main() {
 	dat, err := ioutil.ReadFile("./main.go")
-    fmt.Println(err)
+	fmt.Println(err)
 	fmt.Println(string(dat))
 }
 ```
