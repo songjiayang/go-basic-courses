@@ -26,12 +26,6 @@ func checkErr(err error) {
 	}
 }
 
-func readFile(path string) {
-	data, err := ioutil.ReadFile(path)
-	checkErr(err)
-	fmt.Println("file content: ", string(data))
-}
-
 func main() {
 	path := "test.txt"
 
