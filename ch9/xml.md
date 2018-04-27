@@ -58,10 +58,10 @@ func main() {
 
 	// 读 xml 文件
 	content, err := ioutil.ReadFile("stu.xml")
-	stu2 := &Student{}
+	stu2 := &Student{} 
 
 	// xml 反序列化
-	err = xml.Unmarshal(content, stu2)
+	err = xml.Unmarshal(content, stu2) // 注意：第二个参数必须是指针
 	checkErr(err)
 
 	fmt.Printf("stu2: %#v\n", stu2)
