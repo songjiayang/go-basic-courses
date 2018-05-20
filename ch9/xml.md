@@ -53,7 +53,7 @@ func main() {
 	fmt.Println(string(newData))
 
 	// 写 xml 文件
-	err = ioutil.WriteFile("stu.xml", []byte(newData), 0644)
+	err = ioutil.WriteFile("stu.xml", newData, 0644)
 	checkErr(err)
 
 	// 读 xml 文件
