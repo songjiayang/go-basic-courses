@@ -37,8 +37,8 @@
     * [写文件](ch8/writefile.md)
 
   * [序列化和反序列化](ch9/readme.md)
-    * [json](ch9/json.md)
     * [xml](ch9/xml.md)
+    * [json](ch9/json.md)
 
   * [网络](ch10/readme.md)
     * [socket](ch10/socket.md)
