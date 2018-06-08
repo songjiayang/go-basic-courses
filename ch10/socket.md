@@ -2,7 +2,7 @@
 
 Socket是网络编程的一个抽象概念，通常我们用一个 Socket 表示 “打开了一个网络连接”，在 Go 中 [net](https://golang.org/pkg/net/) 包对其进行了高度抽象，直接使用 `func Dial(network, address string) (Conn, error)` 就可轻松建立一个 Socket 连接。当 Socket 创建好了以后，我们可以利用 Scoket 进行 I/O 操作，当操作完毕后，需要对其进行关闭操作。
 
-本章将从 TCP， UDP， Unix Domain Socket 入手，带领大家全面了解 Socket 在 Go 中的应用。
+本章将从 TCP， UDP， Unix 地址 Socket 入手，带领大家全面了解 Socket 在 Go 中的应用。
 
 ### 基本知识
 
@@ -10,12 +10,30 @@ Socket 连接又分为客户端和服务端，如图：
 
 ![socket.png](socket.png)
 
-当连接创建后，我们可以在客户端或服务端对连接进行读/写操作，最后可以使用通关闭操作来断开连接，主要的步骤包括：
+当连接创建后，我们可以在客户端或服务端对连接进行读/写操作，最后可以通过关闭操作来断开连接，所以主要步骤包括：
 
 - 创建连接:
 
 ```go
 Dial(network, address string) (Conn, error)
+```
+
+TCP 可以为：
+
+```go
+net.DialTCP(network string, laddr *net.UDPAddr, raddr *net.TCPAddr) (Conn, error)
+```
+
+UDP 可以为：
+
+```go
+net.DialUDP(network string, laddr *net.UDPAddr, raddr *net.UDPAddr) (Conn, error)
+```
+
+Unix Address 可以为：
+
+```go
+net.DialUnix(network string, laddr *net.UnixAddr, raddr *net.UnixAddr) (Conn, error)
 ```
 
 - 通过连接发送数据:
@@ -98,6 +116,245 @@ Vary: Accept-Encoding
 
 ### TCP 操作
 
+在这个例子中，我们先使用 net 包创建一个 TCP Server ，然后尝试连接 Server, 最后再通过客户端发送 `hello` 到 Server，同时 Server 响应 `word`。
+
+我们来看完整例子：
+
+- server/main.go
+
+```golang
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"net"
+)
+
+func main() {
+	l, err := net.Listen("tcp", "127.0.0.1:8888")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("Start server with: %s", l.Addr())
+
+	defer l.Close()
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		go handleConnection(conn)
+	}
+}
+
+func handleConnection(conn net.Conn) {
+	reader := bufio.NewReader(conn)
+
+	for {
+		dat, _, err := reader.ReadLine()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		fmt.Println("client:", string(dat))
+
+		_, err = conn.Write([]byte("word\n"))
+		if err != nil {
+			log.Println(err)
+			return
+		}
+	}
+}
+```
+
+注意： 
+	1. 通过 `net.Listen("tcp", "127.0.0.1:8888")` 新建一个 TCP Server。
+	2. 通过 `l.Accept()` 获取创建的连接。
+	3. 通过 `go handleConnection(c)` 新建的 goroutine 来处理连接。
+
+- client/main.go
+
+```golang
+
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"net"
+	"time"
+)
+
+func main() {
+	addr, err := net.ResolveTCPAddr("tcp", "127.0.0.1:8888")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	conn, err := net.DialTCP("tcp", nil, addr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer conn.Close()
+
+	reader := bufio.NewReader(conn)
+	for {
+		_, err := conn.Write([]byte("hello\n"))
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		dat, _, err := reader.ReadLine()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("sever:", string(dat))
+
+		time.Sleep(5 * time.Second)
+	}
+}
+```
+
+注意： 
+	1. 通过 `net.DialTCP("tcp", nil, addr)` 尝试创建到 TCP Sever 的连接。
+	2. 通过 `conn.Write([]byte("hello\n"))` 向服务端发送数据。
+	3. 通过 `reader.ReadLine()` 读取服务端响应数据。
+
+当我们运行代码的时候，可以在终端看到如下输入：
+
+```
+go run server/main.go
+
+2018/06/08 08:12:23 Start server with: 127.0.0.1:8888
+client: hello
+client: hello
+```
+
+```
+go run client/main.go
+
+2018/06/08 08:12:23 Start server with: 127.0.0.1:8888
+sever: word
+sever: word
+```
+
 ### UDP 操作
+
+UDP 相较于 TCP 简单的多，它具有以下特点：
+
+- 无连接的
+- 要求系统资源较少 
+- UDP 程序结构较简单 
+- 基于数据报模式(UDP)
+- UDP 可能丢包 
+- UDP 不保证数据顺序性 
+
+所以它更适用于：
+
+- 面向数据报方式
+- 网络数据大多为短消息 
+- 拥有大量 Client
+- 对数据安全性无特殊要求
+- 网络负担非常重，但对响应速度要求高
+
+下面我们通过一个游戏数据转发的例子来了解它：
+
+- server/main.go
+
+```
+package main
+
+import (
+	"log"
+	"net"
+	"time"
+)
+
+func main() {
+	// listen to incoming udp packets
+	pc, err := net.ListenPacket("udp", "127.0.0.1:8888")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Start server with: %s", pc.LocalAddr())
+
+	defer pc.Close()
+
+	clients := make([]net.Addr, 0)
+
+	go func() {
+		for {
+			for _, addr := range clients {
+				_, err := pc.WriteTo([]byte("pong\n"), addr)
+				if err != nil {
+					log.Println(err)
+				}
+			}
+
+			time.Sleep(5 * time.Second)
+		}
+	}()
+
+	for {
+		buf := make([]byte, 256)
+		n, addr, err := pc.ReadFrom(buf)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
+		clients = append(clients, addr)
+
+		log.Println(string(buf[0:n]))
+		log.Println(addr.String(), "connecting...", len(clients), "connected")
+	}
+}
+```
+
+注意：
+	1. 监听本地 UDP `127.0.0.1:8888`。
+	2. 使用 `pc.ReadFrom(buf)` 方法读取客户端发送的消息。
+	3. 使用 `clients` 来保存所有连上的客户端连接。
+	4. 通过 `pc.WriteTo([]byte("pong\n"), addr)` 向所有客户端发送消息。
+
+当我运行代码可以得到如下输出：
+
+```
+# 执行命令
+go run server/main.go
+
+# 输出
+2018/06/08 14:36:13 Start server with: 127.0.0.1:8888
+2018/06/08 14:36:15 ping...
+2018/06/08 14:36:15 127.0.0.1:61790 connecting... 1 connected
+2018/06/08 14:36:18 ping...
+2018/06/08 14:36:18 127.0.0.1:59989 connecting... 2 connected
+```
+
+```
+# 启动 client1
+go run client/main.go
+
+# 输出
+2018/06/08 14:36:18 pong
+2018/06/08 14:36:23 pong
+```
+
+```
+# 启动 client2
+go run client/main.go
+
+# 输出
+2018/06/08 14:37:58 pong
+2018/06/08 14:38:03 pong
+```
 
 ### Unix Domain 操作
