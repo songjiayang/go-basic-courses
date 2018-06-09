@@ -2,7 +2,7 @@
 
 Socket是网络编程的一个抽象概念，通常我们用一个 Socket 表示 “打开了一个网络连接”，在 Go 中 [net](https://golang.org/pkg/net/) 包对其进行了高度抽象，直接使用 `func Dial(network, address string) (Conn, error)` 就可轻松建立一个 Socket 连接。当 Socket 创建好了以后，我们可以利用 Scoket 进行 I/O 操作，当操作完毕后，需要对其进行关闭操作。
 
-本章将从 TCP， UDP， Unix 地址 Socket 入手，带领大家全面了解 Socket 在 Go 中的应用。
+本章将从 TCP， UDP， Unix Socket 入手，带领大家全面了解 Socket 在 Go 中的应用。
 
 ### 基本知识
 
@@ -357,4 +357,132 @@ go run client/main.go
 2018/06/08 14:38:03 pong
 ```
 
-### Unix Domain 操作
+### Unix Socket 操作
+
+Unix Socket 和 TCP 很相似，只不过监听的地址是一个 Socket 文件，例如：
+
+```golang
+l, err := net.Listen("unix", "/tmp/echo.sock")
+```
+
+下面我们就通过一个实际的例子来练习：
+
+- server/main.go
+
+```golang
+package main
+
+import (
+	"log"
+	"net"
+)
+
+func main() {
+	l, err := net.Listen("unix", "/tmp/unix.sock")
+	if err != nil {
+		log.Fatal("listen error:", err)
+	}
+
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			log.Fatal("accept error:", err)
+		}
+
+		go helloServer(conn)
+	}
+}
+
+func helloServer(c net.Conn) {
+	for {
+		buf := make([]byte, 512)
+		nr, err := c.Read(buf)
+		if err != nil {
+			return
+		}
+
+		data := buf[0:nr]
+		log.Println(string(data))
+
+		_, err = c.Write([]byte("hello"))
+		if err != nil {
+			log.Fatal("Write: ", err)
+		}
+	}
+}
+```
+
+说明： 
+	- 使用 `net.Listen("unix", "/tmp/unix.sock")` 启动一个 Server。
+	- 使用 `conn, err := l.Accept()` 来接受客户端的连接。
+	- 使用 `go helloServer(conn)` 来处理客户端连接，并读取客户端发送的数据 `hi` 并返回 `hello`。
+
+- client/main.go
+
+```golang
+package main
+
+import (
+	"io"
+	"log"
+	"net"
+	"time"
+)
+
+func reader(r io.Reader) {
+	buf := make([]byte, 512)
+	for {
+		n, err := r.Read(buf[:])
+		if err != nil {
+			return
+		}
+		log.Println(string(buf[0:n]))
+	}
+}
+
+func main() {
+	addr, err := net.ResolveUnixAddr("unix", "/tmp/unix.sock")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	c, err := net.DialUnix("unix", nil, addr)
+	if err != nil {
+		panic(err)
+	}
+	defer c.Close()
+
+	go reader(c)
+	for {
+		_, err := c.Write([]byte("hi"))
+		if err != nil {
+			log.Fatal("write error:", err)
+			break
+		}
+		time.Sleep(3 * time.Second)
+	}
+}
+```
+
+注意： 
+	- 使用 `c, err := net.DialUnix("unix", nil, addr)`  来连接服务端。
+	- 使用 `c.Write([]byte("hi"))` 向服务端发送 `hi` 消息。
+	- 使用 `r.Read(buf)` 读取客户端发送的消息。
+
+当运行代码可以得到如下输出：
+
+```
+# go run server/main.go
+
+2018/06/09 20:42:14 hi
+2018/06/09 20:42:16 hi
+2018/06/09 20:42:17 hi
+```
+
+```
+# go run client/main.go
+
+2018/06/09 20:41:47 hello
+2018/06/09 20:41:50 hello
+2018/06/09 20:41:53 hello
+```
