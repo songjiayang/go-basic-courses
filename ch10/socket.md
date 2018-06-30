@@ -1,8 +1,10 @@
 # Socket
 
-Socket是网络编程的一个抽象概念，通常我们用一个 Socket 表示 “打开了一个网络连接”，在 Go 中 [net](https://golang.org/pkg/net/) 包对其进行了高度抽象，直接使用 `func Dial(network, address string) (Conn, error)` 就可轻松建立一个 Socket 连接。当 Socket 创建好了以后，我们可以利用 Scoket 进行 I/O 操作，当操作完毕后，需要对其进行关闭操作。
+Socket是网络编程的一个抽象概念，通常我们用一个 Socket 表示 “打开了一个网络连接”，在 Go 中主要使用 [net](https://golang.org/pkg/net/) 包。
 
-本章将从 TCP， UDP， Unix Socket 入手，带领大家全面了解 Socket 在 Go 中的应用。
+使用 [net](https://golang.org/pkg/net/) 的 `func Dial(network, address string) (Conn, error)` 函数就可轻松建立一个 Socket 连接。Socket 创建成功后，我们可以对其进行 I/O 操作，最后不要记得对其进行关闭操作。
+
+本章将从 TCP， UDP， Unix 入手，带领大家全面了解 Socket 在 Go 中的应用。
 
 ### 基本知识
 
@@ -10,30 +12,20 @@ Socket 连接又分为客户端和服务端，如图：
 
 ![socket.png](socket.png)
 
-当连接创建后，我们可以在客户端或服务端对连接进行读/写操作，最后可以通过关闭操作来断开连接，所以主要步骤包括：
+核心步骤包括：
 
 - 创建连接:
 
 ```go
 Dial(network, address string) (Conn, error)
 ```
+注意, 这里的 network 可以为:
 
-TCP 可以为：
-
-```go
-net.DialTCP(network string, laddr *net.UDPAddr, raddr *net.TCPAddr) (Conn, error)
-```
-
-UDP 可以为：
-
-```go
-net.DialUDP(network string, laddr *net.UDPAddr, raddr *net.UDPAddr) (Conn, error)
-```
-
-Unix Address 可以为：
-
-```go
-net.DialUnix(network string, laddr *net.UnixAddr, raddr *net.UnixAddr) (Conn, error)
+```golang
+"tcp", "tcp4", "tcp6"
+"udp", "udp4", "udp6"
+"ip", "ip4", "ip6"
+"unix", "unixgram", "unixpacket"
 ```
 
 - 通过连接发送数据:
@@ -55,7 +47,7 @@ conn.Read(buf)
 conn.Close()
 ```
 
->> 注意： `conn` 是一个 IO 对象，我们在实际环境中使用 IO 相关的帮助方法来进行读写操作。
+>> 注意： `conn` 是一个 IO 对象，我们主要使用 IO 相关的帮助方法来进行读写操作。
 
 ### 实际例子之 google 首页访问
 
@@ -112,7 +104,7 @@ Vary: Accept-Encoding
 ....
 ```
 
-说明： google.com 网站后端是一个 HTTP server, 因为 HTTP 建立在 TCP 协议基础上，所以我们这里可以使用 TCP 协议来进行访问。
+说明：google.com 网站后端是一个 HTTP server, 因为 HTTP 建立在 TCP 协议基础上，所以我们这里可以使用 TCP 协议来进行访问。
 
 ### TCP 操作
 
@@ -192,12 +184,7 @@ import (
 )
 
 func main() {
-	addr, err := net.ResolveTCPAddr("tcp", "127.0.0.1:8888")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	conn, err := net.DialTCP("tcp", nil, addr)
+	conn, err := net.Dial("tcp", "127.0.0.1:8888")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -256,19 +243,11 @@ UDP 相较于 TCP 简单的多，它具有以下特点：
 - UDP 可能丢包 
 - UDP 不保证数据顺序性 
 
-所以它更适用于：
-
-- 面向数据报方式
-- 网络数据大多为短消息 
-- 拥有大量 Client
-- 对数据安全性无特殊要求
-- 网络负担非常重，但对响应速度要求高
-
-下面我们通过一个游戏数据转发的例子来了解它：
+下面我们通过一个统计服务在线人数的例子来了解它：
 
 - server/main.go
 
-```
+```golang
 package main
 
 import (
@@ -325,6 +304,42 @@ func main() {
 	3. 使用 `clients` 来保存所有连上的客户端连接。
 	4. 通过 `pc.WriteTo([]byte("pong\n"), addr)` 向所有客户端发送消息。
 
+- client/main.go
+
+```golang
+package main
+
+import (
+	"bufio"
+	"log"
+	"net"
+)
+
+func main() {
+	conn, err := net.Dial("udp", "127.0.0.1:8888")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer conn.Close()
+
+	_, err = conn.Write([]byte("ping..."))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	reader := bufio.NewReader(conn)
+	for {
+		dat, _, err := reader.ReadLine()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Println(string(dat))
+	}
+}
+```
+
 当我运行代码可以得到如下输出：
 
 ```
@@ -357,9 +372,9 @@ go run client/main.go
 2018/06/08 14:38:03 pong
 ```
 
-### Unix Socket 操作
+### Unix 操作
 
-Unix Socket 和 TCP 很相似，只不过监听的地址是一个 Socket 文件，例如：
+Unix 和 TCP 很相似，只不过监听的地址是一个 Socket 文件，例如：
 
 ```golang
 l, err := net.Listen("unix", "/tmp/echo.sock")
@@ -441,14 +456,9 @@ func reader(r io.Reader) {
 }
 
 func main() {
-	addr, err := net.ResolveUnixAddr("unix", "/tmp/unix.sock")
+	c, err := net.Dial("unix", "/tmp/unix.sock")
 	if err != nil {
 		log.Fatal(err)
-	}
-
-	c, err := net.DialUnix("unix", nil, addr)
-	if err != nil {
-		panic(err)
 	}
 	defer c.Close()
 
@@ -465,7 +475,7 @@ func main() {
 ```
 
 注意： 
-	- 使用 `c, err := net.DialUnix("unix", nil, addr)`  来连接服务端。
+	- 使用 `c, err := net.Dial("unix", "/tmp/unix.sock")`  来连接服务端。
 	- 使用 `c.Write([]byte("hi"))` 向服务端发送 `hi` 消息。
 	- 使用 `r.Read(buf)` 读取客户端发送的消息。
 
