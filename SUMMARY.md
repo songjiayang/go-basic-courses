@@ -43,12 +43,13 @@
   * [网络](ch10/readme.md)
     * [socket](ch10/socket.md)
     * [http](ch10/http.md)
+    * [websocket](ch10/websocket.md)
 
   * [数据库操作](ch11/readme.md)
     * [MySQL](ch11/mysql.md)
     * [MongoDB](ch11/mongodb.md)
 
   * [项目工程](ch12/readme.md)
-    * [包](ch12/package.md)
-    * [工具](ch12/tool.md)
+    * [包和管理](ch12/package.md)
     * [单元测试](ch12/test.md)
+    * [其他工具](ch12/tool.md)
