@@ -40,7 +40,7 @@ string	  the set of string value (eg: "hi")
 
 一般我们用于判断条件, 它的取值范围为 `true`, `false`, 声明如下：
 
-```
+```golang
 var a bool
 var a = true
 a := true
@@ -54,7 +54,7 @@ const a = true
 
 例如：
 
-```
+```golang
 var (
   a uint8 = 1
   b int8 = 1
@@ -72,7 +72,7 @@ var (
 
 ### 字符串
 
-```
+```golang
 var a = "hello" //单行字符串
 var c = "\"" // 转义符
 
@@ -97,7 +97,7 @@ fmt.Println(len([]rune(str))) // 8 查看有多少个字符
 - byte，uint8 别名，用于表示二进制数据的 bytes
 - rune，int32 别名, 用于表示一个符号
 
-```
+```golang
 var str = "hello, 世界"
 
 for _, char := range str {

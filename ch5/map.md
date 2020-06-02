@@ -44,13 +44,13 @@ cMap["北京"] = 1
 
 - 简短声明方式
 
-```
+```golang
 cMap := map[string]int{"北京": 1}
 ```
 
 ### map 基本操作
 
-```
+```golang
 cMap := map[string]int{}
 
 cMap["北京"] = 1 //写
@@ -74,7 +74,7 @@ fmt.Println("北京")
 
 ### 循环和无序性
 
-```
+```golang
 cMap := map[string]int{"北京": 1, "上海": 2, "广州": 3, "深圳": 4}
 
 for city, code := range cMap {
@@ -85,7 +85,7 @@ for city, code := range cMap {
 
 ### 线程不安全
 
-```
+```golang
 cMap := make(map[string]int)
 
 var wg sync.WaitGroup
@@ -106,7 +106,7 @@ wg.Wait()
 
 在 Go 1.6 之后的版本，多次运行此段代码，你将遇到这样的错误信息：
 
-```
+```golang
 fatal error: concurrent map writes
 
 goroutine x [running]:
@@ -121,7 +121,7 @@ runtime.throw(0x10c64b6, 0x15)
 
 ### map 嵌套
 
-```
+```golang
 provinces := make(map[string]map[string]int)
 
 provinces["北京"] = map[string]int{

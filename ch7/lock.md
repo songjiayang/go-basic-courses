@@ -4,7 +4,7 @@
 
 首先我们来看一个例子：
 
-```
+```golang
 package main
 
 import (
@@ -50,7 +50,7 @@ func printName() {
 
 下面再来看一个例子：
 
-```
+```golang
 package main
 
 import (
@@ -89,7 +89,7 @@ The numbers is [0 5 7]
 
 针对这个问题我们可以使用 Lock（锁）来修复，从而保证数据的一致性，例如：
 
-```
+```golang
 package main
 
 import (
@@ -128,7 +128,7 @@ func main() {
 
 例如代码：
 
-```
+```golang
 package main
 
 import (

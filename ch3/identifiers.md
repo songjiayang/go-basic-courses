@@ -8,7 +8,7 @@ Go 语言中，任何标识符（变量，常量，函数，自定义类型等�
 
 ### Go 关键字:
 
-```
+```golang
 break        default      func         interface    select
 case         defer        go           map          struct
 chan         else         goto         package      switch

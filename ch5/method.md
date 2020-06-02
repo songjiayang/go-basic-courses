@@ -9,7 +9,7 @@
 
 方法（method）的声明和函数很相似, 只不过它必须指定接收者：
 
-```
+```golang
 func (t T) F() {}
 ```
 
@@ -21,7 +21,7 @@ func (t T) F() {}
 
 ### 简单例子
 
-```
+```golang
 package main
 
 type T struct{}
@@ -38,7 +38,7 @@ func main() {
 
 例如：
 
-```
+```golang
 package main
 
 func (t int64) F()  {}
@@ -51,7 +51,7 @@ func main() {
 
 当运行以下代码会得到 `cannot define new methods on non-local type int64` 类似错误信息，我们可以使用自定义类型来解决：
 
-```
+```golang
 package main
 
 type T int64
@@ -69,7 +69,7 @@ func main() {
 
 a. 接收者定义的方法名不能重复, 例如：
 
-```
+```golang
 package main
 
 type T struct{}
@@ -87,7 +87,7 @@ func main() {
 
 b. 结构体方法名不能和字段重复，例如：
 
-```
+```golang
 package main
 
 type T struct{
@@ -110,7 +110,7 @@ func main() {
 
 在 Go 语言中，方法的接收者可以同时为值或者指针，例如：
 
-```
+```golang
 package main
 
 type T struct{}
@@ -136,7 +136,7 @@ func main() {
 同样我们先看一段代码：
 
 
-```
+```golang
 package main
 
 import "fmt"
@@ -167,7 +167,7 @@ func main() {
 
 运行代码输出结果为：
 
-```
+```golang
 {0}
 {0}
 {3}

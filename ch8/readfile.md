@@ -6,7 +6,7 @@
 
 我们先来看看一个简单的例子：
 
-```
+```golang
 package main
 
 import (
@@ -26,7 +26,7 @@ func main() {
 
 ### 带缓冲区读
 
-```
+```golang
 package main
 
 import (
@@ -59,7 +59,7 @@ im
 
 第一种： f.Seek + f.Read
 
-```
+```golang
 package main
 
 import (
@@ -87,7 +87,7 @@ ge
 
 第二种：使用 `f.ReadAt`
 
-```
+```golang
 package main
 
 import (
@@ -116,7 +116,7 @@ ge
 
 第一种方式是非并发安全的，例如：
 
-```
+```golang
 package main
 
 import (
@@ -165,7 +165,7 @@ ck
 
 第二种 `f.ReadAt` 是并发安全的，例如：
 
-```
+```golang
 package main
 
 import (
@@ -211,7 +211,7 @@ ck
 
 实战项目一： 如何使用 `buf` 实现 `ioutil.ReadFile` 类似效果：
 
-```
+```golang
 package main
 
 import (
@@ -246,7 +246,7 @@ func main() {
 
 实战项目二： 使用 `bufio` 实现行统计：
 
-```
+```golang
 package main
 
 import (

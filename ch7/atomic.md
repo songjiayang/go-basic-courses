@@ -30,7 +30,8 @@ atomic 包中提供了如下以Add为前缀的增减操作:
 先来看一个例子： 分别用“锁”和原子操作来实现多个 goroutine 对同一个变量进行累加操作。
 
 #### 使用锁实现
-```
+
+```golang
 package main
 
 import (
@@ -69,7 +70,7 @@ The total number is 7770
 
 #### 使用 atomic 实现
 
-```
+```golang
 package main
 
 import (

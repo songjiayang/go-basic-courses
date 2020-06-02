@@ -12,7 +12,7 @@ go f(x, y, z)
 
 首先我们看一个例子：
 
-```
+```golang
 package main
 
 import (
@@ -47,7 +47,7 @@ func main() {
 
 我们可以使用 goroutine 并发执行任务，从而整体加快速度，下面是使用 goroutine 改进的代码：
 
-```
+```golang
 package main
 
 import (
@@ -74,7 +74,7 @@ func main() {
 
 为了看到输出结果，我们可以使用 `time.Sleep()` 方法让 `main()` 函数延迟结束，例如：
 
-```
+```golang
 package main
 
 import (
@@ -116,7 +116,7 @@ func main() {
 
 上面例子中，其实我们还可以使用 `sync.WaitGroup` 来等待所有的 goroutine 结束，从而实现并发的同步，这比使用 `time.Sleep()` 更加优雅，例如：
 
-```
+```golang
 package main
 
 import (
@@ -162,7 +162,7 @@ func main() {
 
 我们一起来猜猜，下面一段代码运行结果是什么？
 
-```
+```golang
 package main
 
 import (
@@ -196,7 +196,7 @@ func main() {
 
 修复方法：
 
-```
+```golang
 package main
 
 import (

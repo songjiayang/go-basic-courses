@@ -14,7 +14,7 @@ if 条件 {
 
 先看一个简单例子:
 
-```
+```golang
 package main
 
 import "fmt"
@@ -30,7 +30,7 @@ func main() {
 
 我们可以在条件中使用 `&` 或 `||` 来进行组合判断：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -68,7 +68,7 @@ func main() {
 
 如果我们的条件分支太多，可以考虑使用 `switch` 替换 `if`, 例如：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -93,7 +93,7 @@ func main() {
 
 `switch` 的 `case` 条件可以是多个值，例如：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -118,7 +118,7 @@ func main() {
 
 `switch` 还可以使用 `if..else` 作为 `case` 条件，例如：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -141,7 +141,7 @@ func main() {
 
 小技巧： 使用 `switch` 对 `interface{}` 进行断言，例如：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -167,7 +167,7 @@ func main() {
 
 使用 `for` 来进行循环操作，例如：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -181,7 +181,7 @@ func main() {
 
 使用 `for..range` 对数组、切片、map、 字符串等进行循环操作，例如：
 
-```
+```golang
 package main
 
 import "fmt"
@@ -197,7 +197,7 @@ func main() {
 
 注意: 这里的 `i`、`v` 是切片元素的位置索引和值。
 
-```
+```golang
 package main
 
 import "fmt"
@@ -218,7 +218,7 @@ func main() {
 
 使用 `continue` 和 `break` 对循环进行控制，例如：
 
-```
+```golang
 package main
 
 import "fmt"

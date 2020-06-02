@@ -7,12 +7,12 @@
 在 Go 中我们主要使用官方的 [encoding/json](https://golang.org/pkg/encoding/json/) 包对 JSON 数据进行序列化和反序列化，主要使用方法有：
 
 - 序列化:
-```
+```golang
 func Marshal(v interface{}) ([]byte, error)
 ```
 
 - 反序列化：
-```
+```golang
 func Unmarshal(data []byte, v interface{}) error
 ```
 
@@ -201,7 +201,7 @@ type A struct {
 
 - 反序列化：
 
-```
+```golang
 package main
 
 import (
