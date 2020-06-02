@@ -27,7 +27,7 @@
     * [异常处理](ch6/error.md)
 
   * [并发](ch7/readme.md)
-    * [Goroutine](ch7/goroutine.md)
+    * [Go 协程](ch7/goroutine.md)
     * [Channel](ch7/channel.md)
     * [锁的使用](ch7/lock.md)
     * [原子操作](ch7/atomic.md)
@@ -37,14 +37,14 @@
     * [写文件](ch8/writefile.md)
 
   * [序列化和反序列化](ch9/readme.md)
-    * [xml](ch9/xml.md)
-    * [json](ch9/json.md)
+    * [XML](ch9/xml.md)
+    * [JSON](ch9/json.md)
 
   * [网络](ch10/readme.md)
-    * [socket](ch10/socket.md)
-    * [http](ch10/http.md)
-    * [websocket](ch10/websocket.md)
-
+    * [TCP](ch10/tcp.md)
+    * [UDP](ch10/udp.md)
+    * [HTTP](ch10/http.md)
+    
   * [数据库操作](ch11/readme.md)
     * [MySQL](ch11/mysql.md)
     * [MongoDB](ch11/mongodb.md)
@@ -52,4 +52,3 @@
   * [项目工程](ch12/readme.md)
     * [包和管理](ch12/package.md)
     * [单元测试](ch12/test.md)
-    * [其他工具](ch12/tool.md)
