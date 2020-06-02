@@ -28,7 +28,7 @@ Go 语言中关于网络的操作都封装在 [net](https://golang.org/pkg/net/)
 l, err := net.Listen("tcp", "127.0.0.1:3000")
 ```
 
->>  `Listen` 其实是 net 包的一个辅助方法，它不仅支持 `tcp` 的连接创建，还支持 `udp`, `ip`, `unix`，它等价于以下操作：
+>>  `Listen` 其实是 net 包的一个辅助方法，它等价于以下操作：
 
 ```
 // 指定本地地址
@@ -48,7 +48,7 @@ c, err := l.Accept()
 - 客户端发起连接请求并创建连接:
 
 ```go
-conn, err := net.Dial("tcp", "ip:port")
+c, err := net.Dial("tcp", "ip:port")
 ```
 
 >>  `Dial` 其实是 net 包的一个辅助方法，它不仅支持 `tcp` 的连接创建，还支持 `udp`, `ip`, `unix`，它等价于以下操作：
@@ -59,40 +59,40 @@ laddr, _ := net.ResolveTCPAddr("tcp", "0.0.0.0:0")
 // 服务端地址
 raddr, _ := net.ResolveTCPAddr("tcp", "ip:port")
 // 创建连接
-conn, err := net.DialTCP("tcp", laddr, raddr)
+c, err := net.DialTCP("tcp", laddr, raddr)
 ```
 
 - 通过连接发送数据:
 
-```
-conn.Write([]byte("ping"))
+```go
+c.Write([]byte("ping"))
 ```
 
 - 通过连接读取数据：
 
-```
+```go
 buf := make([]byte, 1024)
-conn.Read(buf)
+c.Read(buf)
 ```
 
 - 设置读超时时间:
 
-```
-conn.SetReadDeadline(time.Now().Add(defaultTimeout))
+```go
+c.SetReadDeadline(time.Now().Add(defaultTimeout))
 ```
 
 - 设置写超时时间:
 
-```
-conn.SetWriteDeadline(time.Now().Add(defaultTimeout))
+```go
+c.SetWriteDeadline(time.Now().Add(defaultTimeout))
 ```
 
 >> 注意： `SetReadDeadline`、`SetWriteDeadline` 方法的参数为具体的时刻，而不是时间间隔（time.Duration）。
 
 - 关闭连接：
 
-```
-conn.Close()
+```go
+c.Close()
 ```
 
 >> 注意： 连接用完之后，需要通过此方法来进行资源释放，不然会出现句柄泄露的问题。
@@ -219,6 +219,6 @@ go run client/main.go
 
 参考资料：
 
-- [百度百科](https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE)
+- [维基百科](https://zh.wikipedia.org/wiki/%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E5%8D%8F%E8%AE%AE)
 - [Go Net 库](https://golang.org/pkg/net)
 - [示例代码](https://github.com/binatify/importgo/tree/master/src/ch10/tcp)
