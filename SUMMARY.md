@@ -52,3 +52,6 @@
   * [项目工程](ch12/readme.md)
     * [包和管理](ch12/package.md)
     * [单元测试](ch12/test.md)
+    * [日志工具](ch12/logging.md)
+    * [命令行参数](ch12/flag.md)
+    * [编译部署](ch12/compile.md)
