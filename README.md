@@ -1,15 +1,12 @@
 # Go 零基础编程入门教程
 
-制作、分享高质量 Go 入门教程，包括：
+制作、分享高质量 Go 入门教程，包括[视频](https://space.bilibili.com/276273794/#/)、[电子书](https://www.gitbook.com/book/songjiayang/go-basic-courses/details)、[源代码](https://github.com/binatify/importgo)，如果你对本书感兴趣，欢迎 star。
 
-* 视频
-  * B 站主页: https://space.bilibili.com/276273794/#/
-* GitBook 书籍: https://www.gitbook.com/book/songjiayang/go-basic-courses/details
-* GitHub 源码: https://github.com/binatify/importgo
-* 作者: 
-  * 宋佳洋，GitHub [songjiayang](https://github.com/songjiayang)
-  * 薛锦，GitHub [csxuejin](https://github.com/csxuejin)
-  
+## 作者信息
+
+* 宋佳洋，GitHub [songjiayang](https://github.com/songjiayang)
+* 薛锦，GitHub [csxuejin](https://github.com/csxuejin)
+
 ## 目录
 
 * [Go 零基础编程入门教程](README.md)
